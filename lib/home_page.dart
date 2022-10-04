@@ -35,16 +35,16 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildAddMoreCard(BuildContext context) => GridCard(
         onClick: () =>
-            setState(() {
-              _features.add(_buildAddMoreCard(context));
-            }),
+            setState(() => _features.add(_buildAddMoreCard(context))),
         child: const Icon(Icons.add),
       );
 
   Widget _buildGrids(BuildContext context) {
     return GridView.count(
       crossAxisCount: 4,
-      children: _features,
+      crossAxisSpacing: 16,
+      mainAxisSpacing: 24,
+      children: [..._features], // GridView hack.
     );
   }
 
