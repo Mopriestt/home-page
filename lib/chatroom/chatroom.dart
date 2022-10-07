@@ -18,7 +18,8 @@ class _ChatroomState extends State<Chatroom> {
           style: const TextStyle(fontSize: 36),
         )),
         IconButton(
-          onPressed: () => setState(() => _chats.add(_controller.text)),
+          onPressed: () =>
+              setState(() => _chats.addAll([_controller.text, 'Hello!'])),
           icon: const Icon(Icons.subdirectory_arrow_left),
         )
       ],
@@ -35,7 +36,7 @@ class _ChatroomState extends State<Chatroom> {
             itemBuilder: (_, index) {
               if (index == 0) return _buildInputArea();
               return index & 1 == 1
-                  ? Text(_chats[index - 1 >> 1],
+                  ? Text(index == 11 ? '刘瑞霖傻蛋！' : _chats[index - 1 >> 1],
                       style: const TextStyle(fontSize: 36))
                   : const Divider();
             }),

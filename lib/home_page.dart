@@ -58,6 +58,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildTitle(BuildContext context) {
+    return Image.asset(
+      'assets/gif/shake.gif',
+      height: 125.0,
+      width: 125.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_features.isEmpty) {
@@ -67,14 +75,11 @@ class _HomePageState extends State<HomePage> {
       ]);
     }
     return Scaffold(
-      backgroundColor: Colors.grey[400],
+      backgroundColor: Colors.grey[50],
       body: Center(
         child: Column(
           children: [
-            const Text(
-              'Home Page!',
-              style: TextStyle(fontSize: 64, color: Colors.blue),
-            ),
+            _buildTitle(context),
             Expanded(child: SizedBox(width: 500, child: _buildGrids(context))),
           ],
         ),
