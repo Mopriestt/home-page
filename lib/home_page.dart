@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:home_page/grid_card.dart';
+import 'dart:math' as math;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,7 +34,16 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
+  Widget _buildChatroomGrid(BuildContext context) => GridCard(
+        onClick: () => Navigator.pushNamed(context, 'chatroom'),
+        child: const ListTile(
+          title: Text('Chatroom', textAlign: TextAlign.center),
+        ),
+      );
+
   Widget _buildAddMoreCard(BuildContext context) => GridCard(
+        color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+            .withOpacity(1.0),
         onClick: () =>
             setState(() => _features.add(_buildAddMoreCard(context))),
         child: const Icon(Icons.add),
@@ -52,13 +62,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     if (_features.isEmpty) {
       _features.addAll([
-        _buildPdfToolGrid(context),
-        _buildQRToolGrid(context),
+        _buildChatroomGrid(context),
         _buildAddMoreCard(context),
       ]);
     }
     return Scaffold(
-      backgroundColor: Colors.grey.withOpacity(0.2),
+      backgroundColor: Colors.grey[400],
       body: Center(
         child: Column(
           children: [
