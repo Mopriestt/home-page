@@ -40,14 +40,15 @@ class _ChatroomState extends State<Chatroom> {
             ),
             Expanded(
               child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: _chats.length * 2,
-                  itemBuilder: (_, index) {
-                    return index & 1 == 0
-                        ? Text(_chats[index >> 1],
-                            style: const TextStyle(fontSize: 36))
-                        : const Divider(endIndent: 24);
-                  }),
+                controller: _scrollController,
+                itemCount: _chats.length << 1,
+                itemBuilder: (_, index) {
+                  return index & 1 == 0
+                      ? Text(_chats[index >> 1],
+                          style: const TextStyle(fontSize: 36))
+                      : const Divider(endIndent: 24);
+                },
+              ),
             ),
             InputArea(onSubmitMessage: onSubmitMessage),
           ],
