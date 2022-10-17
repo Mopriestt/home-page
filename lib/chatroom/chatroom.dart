@@ -35,8 +35,8 @@ class _ChatroomState extends State<Chatroom> {
           children: [
             Image.asset(
               'assets/gif/shake.gif',
-              height: 125.0,
-              width: 125.0,
+              height: 40,
+              width: 40,
             ),
             Expanded(
               child: ListView.builder(
