@@ -44,8 +44,7 @@ class _ChatroomState extends State<Chatroom> {
                         : const Divider(endIndent: 24);
                   }),
             ),
-            InputArea(
-                onSubmitMessage: onSubmitMessage),
+            InputArea(onSubmitMessage: onSubmitMessage),
           ],
         ),
       ),
