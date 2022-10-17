@@ -9,17 +9,23 @@ class _ChatroomState extends State<Chatroom> {
   final _chats = <String>[];
   final _controller = TextEditingController();
 
+  void postMsg() => setState(() {
+        _chats.add(_controller.text);
+        _controller.text = '';
+      });
+
   Widget _buildInputArea() {
     return Row(
       children: [
         Expanded(
-            child: TextField(
-          controller: _controller,
-          style: const TextStyle(fontSize: 36),
-        )),
+          child: TextField(
+            onSubmitted: (_) => postMsg(), // Keyboard enter.
+            controller: _controller,
+            style: const TextStyle(fontSize: 36),
+          ),
+        ),
         IconButton(
-          onPressed: () =>
-              setState(() => _chats.addAll([_controller.text, 'Hello!'])),
+          onPressed: postMsg,
           icon: const Icon(Icons.subdirectory_arrow_left),
         )
       ],
@@ -36,7 +42,7 @@ class _ChatroomState extends State<Chatroom> {
             itemBuilder: (_, index) {
               if (index == 0) return _buildInputArea();
               return index & 1 == 1
-                  ? Text(index == 11 ? '刘瑞霖傻蛋！' : _chats[index - 1 >> 1],
+                  ? Text(_chats[index - 1 >> 1],
                       style: const TextStyle(fontSize: 36))
                   : const Divider();
             }),
