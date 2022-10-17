@@ -33,6 +33,11 @@ class _ChatroomState extends State<Chatroom> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
+            Image.asset(
+              'assets/gif/shake.gif',
+              height: 125.0,
+              width: 125.0,
+            ),
             Expanded(
               child: ListView.builder(
                   controller: _scrollController,

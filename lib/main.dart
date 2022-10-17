@@ -8,7 +8,7 @@ void main() {
     MaterialApp(
       routes: {
         '/': (_) => const HomePage(),
-        'chatroom': (_) => Chatroom(),
+        'chatroom': (_) => const Chatroom(),
       },
     ),
   );
