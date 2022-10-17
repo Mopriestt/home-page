@@ -1,35 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:home_page/chatroom/input_area.dart';
 
 class Chatroom extends StatefulWidget {
+  const Chatroom({super.key});
+
   @override
   State<StatefulWidget> createState() => _ChatroomState();
 }
 
 class _ChatroomState extends State<Chatroom> {
   final _chats = <String>[];
-  final _controller = TextEditingController();
+  final _scrollController = ScrollController();
 
-  void postMsg() => setState(() {
-        _chats.add(_controller.text);
-        _controller.text = '';
-      });
-
-  Widget _buildInputArea() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            onSubmitted: (_) => postMsg(), // Keyboard enter.
-            controller: _controller,
-            style: const TextStyle(fontSize: 36),
-          ),
-        ),
-        IconButton(
-          onPressed: postMsg,
-          icon: const Icon(Icons.subdirectory_arrow_left),
-        )
-      ],
-    );
+  void onSubmitMessage(String msg) {
+    if (msg.trim().isEmpty) return;
+    setState(() => _chats.add(msg));
+    // addPostFrameCallback to make sure new added msg is counted.
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linearToEaseOut,
+      );
+    });
   }
 
   @override
@@ -37,15 +31,23 @@ class _ChatroomState extends State<Chatroom> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: ListView.builder(
-            itemCount: _chats.length * 2 + 1,
-            itemBuilder: (_, index) {
-              if (index == 0) return _buildInputArea();
-              return index & 1 == 1
-                  ? Text(_chats[index - 1 >> 1],
-                      style: const TextStyle(fontSize: 36))
-                  : const Divider();
-            }),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _chats.length * 2,
+                  itemBuilder: (_, index) {
+                    return index & 1 == 0
+                        ? Text(_chats[index >> 1],
+                            style: const TextStyle(fontSize: 36))
+                        : const Divider(endIndent: 24);
+                  }),
+            ),
+            InputArea(
+                onSubmitMessage: onSubmitMessage),
+          ],
+        ),
       ),
     );
   }
