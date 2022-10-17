@@ -20,7 +20,6 @@ class _InputAreaState extends State<InputArea> {
     _focusNode.requestFocus();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
