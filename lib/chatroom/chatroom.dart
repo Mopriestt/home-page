@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:home_page/api/my_server.dart';
 import 'package:home_page/chatroom/input_area.dart';
 
 class Chatroom extends StatefulWidget {
   const Chatroom({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ChatroomState();
+  State<Chatroom> createState() => _ChatroomState();
 }
 
 class _ChatroomState extends State<Chatroom> {
-  final _chats = <String>[];
+  var _chats = <String>[];
   final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    MyServer.getChatHistory().then((chats) => setState(() => _chats = chats));
+  }
 
   void onSubmitMessage(String msg) {
     if (msg.trim().isEmpty) return;
@@ -24,6 +31,21 @@ class _ChatroomState extends State<Chatroom> {
         curve: Curves.linearToEaseOut,
       );
     });
+    MyServer.postChat(msg).then((chats) => setState(() => _chats = chats));
+  }
+
+  Widget _buildChatList(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: _chats.length << 1,
+        itemBuilder: (_, index) {
+          return index & 1 == 0
+              ? Text(_chats[index >> 1], style: const TextStyle(fontSize: 36))
+              : const Divider(endIndent: 24);
+        },
+      ),
+    );
   }
 
   @override
@@ -38,18 +60,7 @@ class _ChatroomState extends State<Chatroom> {
               height: 40,
               width: 40,
             ),
-            Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _chats.length << 1,
-                itemBuilder: (_, index) {
-                  return index & 1 == 0
-                      ? Text(_chats[index >> 1],
-                          style: const TextStyle(fontSize: 36))
-                      : const Divider(endIndent: 24);
-                },
-              ),
-            ),
+            _buildChatList(context),
             InputArea(onSubmitMessage: onSubmitMessage),
           ],
         ),
