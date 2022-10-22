@@ -28,10 +28,15 @@ class _InputAreaState extends State<InputArea> {
           child: TextField(
             controller: _controller,
             focusNode: _focusNode,
+            decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            ),
             style: const TextStyle(fontSize: 36),
             onSubmitted: (_) => postMsg(), // Keyboard enter.
           ),
         ),
+        const SizedBox(width: 12),
         IconButton(
           onPressed: postMsg,
           icon: const Icon(Icons.subdirectory_arrow_left),
