@@ -1,4 +1,4 @@
-# home_page
+# home-page
 
 A personal home page.
 
