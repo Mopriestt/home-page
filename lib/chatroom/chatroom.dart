@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:home_page/api/my_server.dart';
 import 'package:home_page/chatroom/input_area.dart';
+import 'package:home_page/chatroom/thread_item.dart';
+
+import 'chat_thread_model.dart';
 
 class Chatroom extends StatefulWidget {
   const Chatroom({super.key});
@@ -11,18 +14,24 @@ class Chatroom extends StatefulWidget {
 }
 
 class _ChatroomState extends State<Chatroom> {
-  var _chats = <String>[];
+  var _chats = <ChatThreadModel>[];
   final _scrollController = ScrollController();
+  late final Future<List<ChatThreadModel>> fetchChat;
 
   @override
   void initState() {
     super.initState();
-    MyServer.getChatHistory().then((chats) => setState(() => _chats = chats));
+    MyServer.getChatHistory().then((chats) => SchedulerBinding.instance
+        .addPostFrameCallback((_) => setState(() => _chats = chats)));
   }
 
-  void onSubmitMessage(String msg) {
+  void onSubmitMessage(String msg, {int? quoteId}) {
     if (msg.trim().isEmpty) return;
-    setState(() => _chats.add(msg));
+    setState(() => _chats.add(ChatThreadModel(
+          message: msg,
+          quoteId: quoteId,
+          isLocal: true,
+        )));
     // addPostFrameCallback to make sure new added msg is counted.
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(
@@ -41,7 +50,7 @@ class _ChatroomState extends State<Chatroom> {
         itemCount: _chats.length << 1,
         itemBuilder: (_, index) {
           return index & 1 == 0
-              ? Text(_chats[index >> 1], style: const TextStyle(fontSize: 36))
+              ? ThreadItem(_chats[index >> 1])
               : const Divider(endIndent: 24);
         },
       ),
@@ -51,6 +60,7 @@ class _ChatroomState extends State<Chatroom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
