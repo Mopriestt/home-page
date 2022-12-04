@@ -25,4 +25,9 @@ class MyServer {
           .map((e) => ChatThreadModel.fromJsonMap(e))
     ];
   }
+
+  static Future<void> logConnection(String ip) {
+    final uri = Uri.https(_host, '/connection_log');
+    return http.post(uri, body: ip);
+  }
 }
