@@ -14,6 +14,7 @@ class Chatroom extends StatefulWidget {
 }
 
 class _ChatroomState extends State<Chatroom> {
+  int? replyingTo;
   var _chats = <ChatThreadModel>[];
   final _scrollController = ScrollController();
   late final Future<List<ChatThreadModel>> fetchChat;
@@ -36,21 +37,29 @@ class _ChatroomState extends State<Chatroom> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.linearToEaseOut,
       );
     });
-    MyServer.postChat(msg).then((chats) => setState(() => _chats = chats));
+    MyServer.postChat(msg, quoteId: quoteId)
+        .then((chats) => setState(() => _chats = chats));
   }
+
+  void setReplyToThread(int? threadId) => setState(() => replyingTo = threadId);
 
   Widget _buildChatList(BuildContext context) {
     return Expanded(
       child: ListView.builder(
+        reverse: true,
         controller: _scrollController,
         itemCount: _chats.length << 1,
         itemBuilder: (_, index) {
           return index & 1 == 0
-              ? ThreadItem(_chats[index >> 1])
+              ? ThreadItem(
+                  (index >> 1) + 1,
+                  _chats[index >> 1],
+                  replyToThread: () => setReplyToThread((index >> 1) + 1),
+                )
               : const Divider(endIndent: 24);
         },
       ),
@@ -65,13 +74,12 @@ class _ChatroomState extends State<Chatroom> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            Image.asset(
-              'assets/gif/shake.gif',
-              height: 40,
-              width: 40,
-            ),
             _buildChatList(context),
-            InputArea(onSubmitMessage: onSubmitMessage),
+            InputArea(
+              onSubmitMessage: onSubmitMessage,
+              replyingTo: replyingTo,
+              clearReplyingTo: () => setReplyToThread(null),
+            ),
           ],
         ),
       ),

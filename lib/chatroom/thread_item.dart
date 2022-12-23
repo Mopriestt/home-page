@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:home_page/chatroom/chat_thread_model.dart';
-import 'package:home_page/chatroom/thread_item_details.dart';
 
 class ThreadItem extends StatefulWidget {
   final ChatThreadModel model;
-  final bool showReply;
+  final int index;
+  final Function() replyToThread;
 
-  const ThreadItem(this.model, {this.showReply = true, super.key});
+  const ThreadItem(this.index, this.model,
+      {required this.replyToThread, super.key});
 
   @override
   State<StatefulWidget> createState() => _ThreadItemState();
 }
 
 class _ThreadItemState extends State<ThreadItem> {
-  void _openThreadDetails() {
-    //showDialog(context: context, builder: (_) => ThreadItemDetails(widget.model));
+  String get replyingToText {
+    if (widget.model.quoteId == null) return '';
+    return ' --> #${widget.model.quoteId}';
   }
 
   @override
@@ -22,21 +24,28 @@ class _ThreadItemState extends State<ThreadItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SelectableText(
+          '#${widget.index}$replyingToText',
+          style: const TextStyle(
+            color: Colors.blueAccent,
+            fontSize: 12,
+          ),
+        ),
+        const SizedBox(height: 4),
         SelectableText(widget.model.message),
-        const SizedBox(height: 8),
         Row(
           children: [
-            Text(
+            SelectableText(
               widget.model.postTime ?? 'error',
               style: const TextStyle(
-                color: Colors.blueAccent,
+                color: Colors.grey,
                 fontSize: 12,
               ),
             ),
-            if (widget.showReply) IconButton(
-              onPressed: _openThreadDetails,
+            IconButton(
+              onPressed: widget.replyToThread,
               icon: const Icon(
-                Icons.reply,
+                Icons.reply_outlined,
                 color: Colors.blueAccent,
               ),
               splashRadius: 16,
