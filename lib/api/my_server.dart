@@ -16,10 +16,15 @@ class MyServer {
     ];
   }
 
-  static Future<List<ChatThreadModel>> postChat(String msg, {int? quoteId}) async {
+  static Future<List<ChatThreadModel>> postChat(
+    String msg, {
+    int? quoteId,
+  }) async {
     final uri = Uri.https(_host, '/chatroom');
-    final response = await http.post(uri,
-        body: {'message': msg, if (quoteId != null) 'quote_id': '$quoteId'});
+    final response = await http.post(
+      uri,
+      body: {'message': msg, if (quoteId != null) 'quote_id': '$quoteId'},
+    );
     return [
       ...(jsonDecode(response.body) as Iterable)
           .map((e) => ChatThreadModel.fromJsonMap(e))
