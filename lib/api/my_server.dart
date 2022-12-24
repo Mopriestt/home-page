@@ -5,7 +5,7 @@ import 'package:home_page/chatroom/chat_thread_model.dart';
 import 'package:http/http.dart' as http;
 
 class MyServer {
-  static get _host => 'api.mopriestt.com:${kReleaseMode ? '443' : '8443'}';
+  static get _host => 'api.mopriestt.com:${kReleaseMode ? '8443' : '443'}';
 
   static Future<List<ChatThreadModel>> getChatHistory() async {
     final uri = Uri.https(_host, '/chatroom');

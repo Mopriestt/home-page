@@ -19488,7 +19488,7 @@ jV:function jV(){},
 Z2(){var s=0,r=A.a1(t.Ya),q,p,o
 var $async$Z2=A.a2(function(a,b){if(a===1)return A.Z(b,r)
 while(true)switch(s){case 0:s=3
-return A.Y(A.alK(A.aaX("https","api.mopriestt.com:443","/chatroom",null)),$async$Z2)
+return A.Y(A.alK(A.aaX("https","api.mopriestt.com:8443","/chatroom",null)),$async$Z2)
 case 3:p=b
 o=t.RE
 q=A.al(J.oa(t.JY.a(B.aS.yV(0,A.afQ(A.afv(p.e).c.a.h(0,"charset")).cS(0,p.w),null)),new A.Z3(),o),!0,o)
@@ -19498,7 +19498,7 @@ case 1:return A.a_(q,r)}})
 return A.a0($async$Z2,r)},
 Z4(a,b){var s=0,r=A.a1(t.Ya),q,p,o,n
 var $async$Z4=A.a2(function(c,d){if(c===1)return A.Z(d,r)
-while(true)switch(s){case 0:o=A.aaX("https","api.mopriestt.com:443","/chatroom",null)
+while(true)switch(s){case 0:o=A.aaX("https","api.mopriestt.com:8443","/chatroom",null)
 n=t.N
 n=A.z(n,n)
 n.l(0,"message",a)
@@ -20389,7 +20389,7 @@ break
 case 7:l=n
 l=A.afQ(A.afv(l.e).c.a.h(0,"charset")).cS(0,l.w)
 s=10
-return A.Y(A.am8(A.aaX("https","api.mopriestt.com:443","/connection_log",null),l),$async$Ck)
+return A.Y(A.am8(A.aaX("https","api.mopriestt.com:8443","/connection_log",null),l),$async$Ck)
 case 10:s=8
 break
 case 9:A.lV(n.b)
